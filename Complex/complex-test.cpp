@@ -27,18 +27,16 @@ Constraints:
 The number of nodes in the tree is in the range [0, 2000].
 -1000 <= Node.val <= 1000
 */
-
-
-
-ostream& 
+ostream&
 operator << (ostream& os, const Complex& x)
 {
-	return os << '(' << x.real () << ',' << x.imag () << ')';
+	return os << '(' << real(x) << ','
+			<< imag(x) << "i)";
 }
 
 int main()
 {
-	cout<< "hello cpp"<< endl;
+	std::cout<< "hello cpp"<< std::endl;
 	
 	Complex c1(2,1);
 	Complex c2;

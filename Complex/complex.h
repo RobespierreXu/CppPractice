@@ -1,9 +1,7 @@
 #ifndef __COMPLEX_H__
 #define __COMPLEX_H__
 
-#include <cmath>
-
-#include <iostream>
+// #include <cmath>
 
 //template <typename T>
 
@@ -11,9 +9,6 @@
 /* 前置声明区 forward declaration */
 class Complex;
 Complex &__doapl(Complex *, const Complex &);
-ostream&
-operator << (ostream& os, const Complex& x);
-
 
 /* 1 */
 /* 类声明区 class declaration */
@@ -153,13 +148,13 @@ conj(const Complex &x)
 	return Complex(real(x), -imag(x));
 }
 
-/* 若返回類型改爲void，就無法對應cout << c1 << c2這種連串的輸出
-ostream&
+/* 若返回類型改爲void，就無法對應cout << c1 << c2這種連串的輸出 */
+/* ostream&
 operator << (ostream& os, const Complex& x)
 {
 	return os << '(' << real(x) << ','
-			<< imag(x) << 'i)';
-}
+			<< imag(x) << "i)";
+} */
 
 // 成員函数 global，默認帶有this
 inline Complex & // 这里因为使用者有可能用法 c3 += c2 += c1;所以不能用void来作为返回值
