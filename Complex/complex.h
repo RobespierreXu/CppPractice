@@ -9,6 +9,7 @@
 /* 前置声明区 forward declaration */
 class Complex;
 Complex &__doapl(Complex *, const Complex &);
+Complex &__doasub(Complex *, const Complex &);
 
 /* 1 */
 /* 类声明区 class declaration */
@@ -22,27 +23,44 @@ public:
 
 	// 操作符重载 成员函数
 	Complex &operator+=(const Complex & /* 表示常数，不被改变 */);
-	Complex conj();
+	Complex &operator-=(const Complex & /* 表示常数，不被改变 */);
+	Complex &operator*=(const Complex & /* 表示常数，不被改变 */);
+	Complex &operator/=(const Complex & /* 表示常数，不被改变 */);
 
+	/* 不要改動data的話，在函數后加上const */
+	/* 在class定義部分出現的，默認是inline function */
 	double real() const /* 表示函数不改变数据内容 */ { return re; }
 	double imag() const /* 表示函数不改变数据内容 */ { return im; }
 
+	Complex conj();
+
 private:
+	/* 複數要有數據 */
 	double re, im;
 
 	friend Complex &__doapl(Complex *, const Complex &);
+	friend Complex &__doasub(Complex *, const Complex &);
+	friend Complex &__doamul(Complex *, const Complex &);
+	friend Complex &__doadiv(Complex *, const Complex &);
 };
 
 /* 2 */
 /* 类定义区 class definition */
 
-// 全域函数 global，沒有全局pointer
-
+// 全侷函数 global，沒有全局pointer
 inline Complex & // 传递者callee无需知道接收者caller是以reference的形式接收的,也可以不用reference，但是慢
 __doapl(Complex *ths, const Complex &r)
 {
 	ths->re += r.re;
 	ths->im += r.im;
+	return *ths;
+}
+
+inline Complex &
+__doasub(Complex *ths, const Complex &r)
+{
+	ths->re -= r.re;
+	ths->im -= r.im;
 	return *ths;
 }
 
@@ -73,10 +91,12 @@ operator-(const Complex &x)
 }
 
 /* c2 = c1 + c2;
-return the result of 2 Complex */
+return the result of 2 Complex
+如果把+設為成員函數，就不能進行實數+複數的操作了 */
 inline Complex
 operator+(const Complex &x, const Complex &y)
 {
+	/* Complex()臨時對象 */
 	return Complex(x.real() + y.real(),
 				   x.imag() + y.imag());
 }
@@ -161,6 +181,13 @@ inline Complex & // 这里因为使用者有可能用法 c3 += c2 += c1;所以�
 Complex::operator+=(const Complex &r)
 {
 	return __doapl(this, r);
+}
+
+// 成員函数 global，默認帶有this
+inline Complex & // 这里因为使用者有可能用法 c3 += c2 += c1;所以不能用void来作为返回值
+Complex::operator-=(const Complex &r)
+{
+	return __doasub(this, r);
 }
 
 /* 共軛複數  */
