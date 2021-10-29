@@ -15,4 +15,8 @@ int main()
 
 	/* 箭头符号得到的东西要用箭头符号继续作用下去 */
 	sp->method();
+
+	cout << __cplusplus << endl;
+
+	return 0;
 }
